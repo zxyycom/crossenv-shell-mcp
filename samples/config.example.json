@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "host": { "targetId": "example-host", "binding": "ssh" },
+  "wsl": { "targetId": "example-wsl", "distribution": "ExampleDistro", "user": "example", "shellVersion": "5.2" },
+  "compose": { "targetId": "example-compose", "wslTargetId": "example-wsl", "project": "example", "service": "example", "user": "example", "workingDirectory": "/workspace", "shellVersion": "5.2" },
+  "ssh": { "registryPath": "C:\\example\\targets.json", "executionRoot": "C:\\example\\execution" }
+}

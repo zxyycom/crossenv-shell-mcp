@@ -1,0 +1,43 @@
+# BEGIN wsl-settings {{TARGET_ID}}
+Host {{SSH_ALIAS}}
+    HostName {{HOSTNAME}}
+    User {{USER}}
+    Port {{PORT}}
+    IdentityFile "{{IDENTITY_FILE}}"
+    IdentitiesOnly yes
+    CertificateFile none
+    AddKeysToAgent no
+    BatchMode yes
+    PreferredAuthentications publickey
+    PubkeyAuthentication yes
+    PasswordAuthentication no
+    KbdInteractiveAuthentication no
+    ForwardAgent no
+    ForwardX11 no
+    ForwardX11Trusted no
+    ClearAllForwardings yes
+    Tunnel no
+    StrictHostKeyChecking yes
+    HostKeyAlgorithms {{HOST_KEY_ALGORITHM}}
+    UserKnownHostsFile "{{KNOWN_HOSTS_FILE}}"
+    GlobalKnownHostsFile none
+    UpdateHostKeys no
+    VerifyHostKeyDNS no
+    CheckHostIP no
+    ProxyCommand none
+    ProxyJump {{PROXY_JUMP}}
+    PermitLocalCommand no
+    CanonicalizeHostname no
+    ConnectionAttempts 1
+    ConnectTimeout 10
+    ControlMaster no
+    ControlPath none
+    ControlPersist no
+    RequestTTY no
+    RemoteCommand none
+    SessionType default
+    ForkAfterAuthentication no
+    EscapeChar none
+    StdinNull no
+Host *
+# END wsl-settings {{TARGET_ID}}
