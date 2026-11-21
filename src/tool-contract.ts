@@ -20,10 +20,13 @@ export const fileToolDescription = "Transfer one ordinary file (up to 100 MiB) b
 
 export function shellToolSchema(catalog: readonly ShellEnvironment[]) {
   if (!catalog.length) throw new Error("Shell catalog 不能为空");
-  const command = z.string().refine((value) => {
-    const length = Array.from(value).length;
-    return length > 0 && length <= shellCommandLimit && !value.includes("\0");
-  }, "command 必须包含 1 至 8192 个 Unicode 字符且不含 NUL").describe("Non-secret UTF-8 source, 1–8192 Unicode characters without NUL; no TTY or additional stdin.").meta({ minLength: 1, maxLength: shellCommandLimit });
+  const command = z.string()
+    .refine((value) => {
+      const length = Array.from(value).length;
+      return length > 0 && length <= shellCommandLimit && !value.includes("\0");
+    }, `command 必须包含 1 至 ${shellCommandLimit} 个 Unicode 字符且不含 NUL`)
+    .describe(`UTF-8 command source, 1–${shellCommandLimit} Unicode characters without NUL.`)
+    .meta({ minLength: 1, maxLength: shellCommandLimit });
   const branches = catalog.map((route) => z.object({
     targetId: z.literal(route.environment).describe(`${route.displayName}; shell ${shellIdentifier(route)}`),
     shell: z.literal(shellIdentifier(route)).describe("Required fixed interpreter product and major.minor for this target."), command,
@@ -31,7 +34,9 @@ export function shellToolSchema(catalog: readonly ShellEnvironment[]) {
   return z.discriminatedUnion("targetId", branches as [typeof branches[number], ...typeof branches]);
 }
 export function shellToolDescription(catalog: readonly ShellEnvironment[]): string {
-  return "Run non-secret source once on the selected target with its fixed shell product and major.minor. No TTY or additional stdin. Commands can change target state. Supported pairs: " + shellEnvironmentDescription(catalog);
+  return "Run one command on the selected target with its fixed shell product and major.minor. "
+    + "No TTY or additional stdin. Commands can change target state; stdout and stderr are returned verbatim. "
+    + `Supported pairs: ${shellEnvironmentDescription(catalog)}`;
 }
 export function shellToolsConfiguration(catalog: readonly ShellEnvironment[]) {
   return { transport: "stdio", runtime: "node", tools: [
